@@ -1,23 +1,27 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, OnInit } from '@angular/core';
+import { NewsService } from '../services/news.service';
+import { NewsItem } from '../models/news';
 
-import { NewsListComponent } from './news-list.component';
+@Component({
+  selector: 'app-news-list',
+  templateUrl: './news-list.component.html'
+})
+export class NewsListComponent implements OnInit {
+  news: NewsItem[] = [];
 
-describe('NewsListComponent', () => {
-  let component: NewsListComponent;
-  let fixture: ComponentFixture<NewsListComponent>;
+  constructor(private newsService: NewsService) {}
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [NewsListComponent]
-    })
-    .compileComponents();
+  ngOnInit(): void {
+    this.loadNews();
+  }
 
-    fixture = TestBed.createComponent(NewsListComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  loadNews(): void {
+    this.newsService.getNews().subscribe(data => this.news = data);
+  }
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  archive(newsId: string): void {
+    this.newsService.archiveNews(newsId).subscribe(() => {
+      this.news = this.news.filter(news => news._id !== newsId); // Remove from new list
+    });
+  }
+}

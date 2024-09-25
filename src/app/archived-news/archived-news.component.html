@@ -1,1 +1,17 @@
-<p>archived-news works!</p>
+<div class="container mt-4">
+    <h2>Archived News</h2>
+    <div *ngIf="archivedNews.length > 0; else noArchivedNews">
+      <div class="card mb-3" *ngFor="let item of archivedNews">
+        <div class="card-body">
+          <h5 class="card-title">{{ item.title }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">By {{ item.author }} | Archived on {{ item.archiveDate | date: 'medium' }}</h6>
+          <p class="card-text">{{ item.description }}</p>
+          <button class="btn btn-danger" (click)="remove(item._id)">Remove</button>
+        </div>
+      </div>
+    </div>
+    <ng-template #noArchivedNews>
+      <p>No archived news available.</p>
+    </ng-template>
+  </div>
+  

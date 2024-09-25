@@ -1,1 +1,17 @@
-<p>news-list works!</p>
+<div class="container mt-4">
+    <h2>New News</h2>
+    <div *ngIf="news.length > 0; else noNews">
+      <div class="card mb-3" *ngFor="let item of news">
+        <div class="card-body">
+          <h5 class="card-title">{{ item.title }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">By {{ item.author }} | {{ item.date | date: 'medium' }}</h6>
+          <p class="card-text">{{ item.description }}</p>
+          <button class="btn btn-warning" (click)="archive(item._id)">Archive</button>
+        </div>
+      </div>
+    </div>
+    <ng-template #noNews>
+      <p>No new news available.</p>
+    </ng-template>
+  </div>
+  
